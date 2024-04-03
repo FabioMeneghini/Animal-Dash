@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/OnMapWeapons/BaseWeaponOnMap.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/OnMapWeapons/AssaultRifleOnMap.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Weapons/assault_rifle.png" type="Texture" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+resource_local_to_scene = true
+
+[node name="AssaultRifleOnMap" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="SpriteGunOnMap" parent="." index="1"]
+material = SubResource( 1 )
+texture = ExtResource( 3 )

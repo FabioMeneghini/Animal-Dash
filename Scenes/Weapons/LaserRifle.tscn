@@ -1,0 +1,151 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://Scenes/Weapons/BaseWeapon.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/Weapons/LaserRifle.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Weapons/laser_rifle.png" type="Texture" id=3]
+[ext_resource path="res://Assets/SoundEffects/laser.wav" type="AudioStream" id=4]
+[ext_resource path="res://Scripts/Weapons/LaserRifleRayCast2D.gd" type="Script" id=5]
+[ext_resource path="res://Assets/SoundEffects/gun_out_of_ammo.mp3" type="AudioStream" id=6]
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 33, 32 )
+
+[sub_resource type="SpriteFrames" id=15]
+animations = [ {
+"frames": [ SubResource( 16 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.710383, 1 )
+colors = PoolColorArray( 0, 0.262745, 1, 1, 0, 0.15625, 1, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0.427184, 0.995454 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+emission_shape = 1
+emission_sphere_radius = 3.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 20.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 4.0
+scale_curve = SubResource( 4 )
+color = Color( 4, 4, 4, 1 )
+color_ramp = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 30.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 4.0
+scale_curve = SubResource( 4 )
+color = Color( 4, 4, 4, 1 )
+color_ramp = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=13]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 200.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 600.0
+scale = 4.0
+scale_curve = SubResource( 4 )
+color = Color( 4, 4, 4, 1 )
+color_ramp = SubResource( 2 )
+
+[sub_resource type="Gradient" id=10]
+offsets = PoolRealArray( 0.693989, 1 )
+colors = PoolColorArray( 0, 0.262745, 1, 1, 0, 0.262745, 1, 0 )
+
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+emission_shape = 2
+emission_box_extents = Vector3( 30, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 3.5
+initial_velocity_random = 1.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 3.0
+color = Color( 4, 4, 4, 1 )
+color_ramp = SubResource( 11 )
+
+[node name="LaserRifle" instance=ExtResource( 1 )]
+frames = SubResource( 15 )
+script = ExtResource( 2 )
+
+[node name="Sound" parent="." index="1"]
+stream = ExtResource( 4 )
+volume_db = 2.0
+
+[node name="Cooldown" parent="." index="2"]
+wait_time = 3.0
+
+[node name="OutOfAmmo" parent="." index="3"]
+stream = ExtResource( 6 )
+
+[node name="RayCast2D" parent="." index="5"]
+position = Vector2( 25, -2 )
+enabled = true
+cast_to = Vector2( 400, 0 )
+script = ExtResource( 5 )
+
+[node name="Line2D" type="Line2D" parent="RayCast2D" index="0" groups=["weapon"]]
+z_index = -5
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 2.5
+default_color = Color( 1.28, 1.34, 2, 1 )
+
+[node name="TweenWidth" type="Tween" parent="RayCast2D" index="1"]
+
+[node name="TweenLength" type="Tween" parent="RayCast2D" index="2"]
+
+[node name="CastingParticles" type="Particles2D" parent="RayCast2D" index="3"]
+emitting = false
+amount = 6
+lifetime = 0.3
+process_material = SubResource( 9 )
+
+[node name="CollisionParticles" type="Particles2D" parent="RayCast2D" index="4"]
+position = Vector2( 32, 0 )
+emitting = false
+lifetime = 0.4
+process_material = SubResource( 8 )
+
+[node name="ShootCollisionParticles" type="Particles2D" parent="RayCast2D" index="5"]
+position = Vector2( 32, 0 )
+emitting = false
+amount = 60
+lifetime = 0.34
+one_shot = true
+explosiveness = 0.6
+process_material = SubResource( 13 )
+
+[node name="BeamParticles" type="Particles2D" parent="RayCast2D" index="6"]
+position = Vector2( 29, 0 )
+emitting = false
+amount = 160
+visibility_rect = Rect2( -1, -1, 2, 2 )
+local_coords = false
+process_material = SubResource( 7 )

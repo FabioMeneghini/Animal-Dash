@@ -1,0 +1,78 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Scripts/OnMapWeapons/SpriteButton.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Weapons/gun.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Buttons/ps4_buttons.png" type="Texture" id=3]
+[ext_resource path="res://Scripts/OnMapWeapons/BaseWeaponOnMap.gd" type="Script" id=4]
+[ext_resource path="res://Scripts/OnMapWeapons/SpriteGunOnMap.gd" type="Script" id=6]
+
+[sub_resource type="CircleShape2D" id=12]
+radius = 22.0227
+
+[sub_resource type="ShaderMaterial" id=19]
+resource_local_to_scene = true
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 3 )
+region = Rect2( 16, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 3 )
+region = Rect2( 32, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 3 )
+region = Rect2( 48, 48, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 48, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=13]
+animations = [ {
+"frames": [ SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 14 ) ],
+"loop": false,
+"name": "default",
+"speed": 10.0
+} ]
+
+[node name="BaseWeaponOnMap" type="Area2D" groups=["weapon"]]
+position = Vector2( 295, 391 )
+collision_layer = 16
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 12 )
+
+[node name="SpriteGunOnMap" type="Sprite" parent="."]
+material = SubResource( 19 )
+z_index = 10
+texture = ExtResource( 2 )
+region_rect = Rect2( -1, 2, 33, 13 )
+script = ExtResource( 6 )
+
+[node name="SpriteButton" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 0, -23 )
+z_index = 10
+frames = SubResource( 13 )
+frame = 3
+playing = true
+script = ExtResource( 1 )
+
+[node name="TimerButton" type="Timer" parent="."]
+wait_time = 1.2
+autostart = true
+
+[node name="TimerFloat" type="Timer" parent="."]
+wait_time = 0.7
+autostart = true
+
+[node name="TweenFloat" type="Tween" parent="."]
+
+[connection signal="area_entered" from="." to="SpriteGunOnMap" method="show_outline"]
+[connection signal="area_entered" from="." to="SpriteButton" method="show_button"]
+[connection signal="area_exited" from="." to="SpriteGunOnMap" method="remove_outline"]
+[connection signal="area_exited" from="." to="SpriteButton" method="hide_button"]
+[connection signal="timeout" from="TimerButton" to="SpriteButton" method="_on_TimerButton_timeout"]
+[connection signal="timeout" from="TimerFloat" to="." method="_on_TimerFloat_timeout"]

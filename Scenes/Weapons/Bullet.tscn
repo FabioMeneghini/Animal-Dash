@@ -1,0 +1,70 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Weapons/bullet.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Weapons/Bullet.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 3 )
+
+[node name="Bullet" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 34
+mass = 100.0
+gravity_scale = 0.0
+contacts_reported = 1
+contact_monitor = true
+linear_damp = 0.0
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 8, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 7, 0 )
+shape = SubResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[node name="RayCasts" type="Node2D" parent="."]
+
+[node name="RayCast1" type="RayCast2D" parent="RayCasts"]
+visible = false
+position = Vector2( 12, 3 )
+enabled = true
+cast_to = Vector2( 0, 1 )
+
+[node name="RayCast2" type="RayCast2D" parent="RayCasts"]
+visible = false
+position = Vector2( 15, 3 )
+enabled = true
+cast_to = Vector2( 1, 1 )
+
+[node name="RayCast3" type="RayCast2D" parent="RayCasts"]
+visible = false
+position = Vector2( 15, 2 )
+enabled = true
+cast_to = Vector2( 1, 0 )
+
+[node name="RayCast4" type="RayCast2D" parent="RayCasts"]
+visible = false
+position = Vector2( 15, -2 )
+enabled = true
+cast_to = Vector2( 1, 0 )
+
+[node name="RayCast5" type="RayCast2D" parent="RayCasts"]
+visible = false
+position = Vector2( 15, -3 )
+enabled = true
+cast_to = Vector2( 1, -1 )
+
+[node name="RayCast6" type="RayCast2D" parent="RayCasts"]
+visible = false
+position = Vector2( 12, -3 )
+enabled = true
+cast_to = Vector2( 0, -1 )
+
+[connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

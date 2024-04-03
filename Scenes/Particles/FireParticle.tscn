@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Weapons/fire_bullet/fire_bullet.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Particles/FireParticle.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 8, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 16, 0, 8, 8 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 24, 0, 8, 8 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": false,
+"name": "default",
+"speed": 15.0
+} ]
+
+[sub_resource type="CircleShape2D" id=6]
+radius = 2.0
+
+[node name="FireParticle" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 34
+mode = 2
+mass = 50.0
+gravity_scale = 2.0
+contacts_reported = 1
+contact_monitor = true
+linear_damp = 1.0
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+modulate = Color( 3, 3, 3, 1 )
+frames = SubResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 6 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.5
+one_shot = true
+autostart = true
+
+[node name="Cooldown" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="Vanish" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
+[node name="TweenScale" type="Tween" parent="."]
+
+[node name="TweenColor" type="Tween" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_FireParticle_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Cooldown" to="." method="_on_Cooldown_timeout"]
+[connection signal="timeout" from="Vanish" to="." method="_on_Vanish_timeout"]

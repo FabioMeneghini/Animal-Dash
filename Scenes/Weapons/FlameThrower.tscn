@@ -1,0 +1,121 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://Assets/Weapons/flame_thrower_anim.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Weapons/BaseWeapon.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/Weapons/FlameThrower.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Particles/FlameThrowerParticles.gd" type="Script" id=4]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 44, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 88, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 132, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 176, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 220, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 264, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 1 )
+region = Rect2( 308, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 1 )
+region = Rect2( 352, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 1 )
+region = Rect2( 396, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 1 )
+region = Rect2( 440, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 1 )
+region = Rect2( 484, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 1 )
+region = Rect2( 528, 0, 44, 16 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 44, 16 )
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
+"loop": false,
+"name": "default",
+"speed": 25.0
+} ]
+
+[sub_resource type="Gradient" id=16]
+offsets = PoolRealArray( 0.557377, 0.770492 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=17]
+gradient = SubResource( 16 )
+
+[sub_resource type="Curve" id=18]
+_data = [ Vector2( 0.194175, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.762136, 0.180682 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=19]
+curve = SubResource( 18 )
+
+[sub_resource type="ParticlesMaterial" id=15]
+flag_disable_z = true
+spread = 22.0
+gravity = Vector3( 0, 80, 0 )
+initial_velocity = 90.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 30.0
+damping_random = 0.2
+scale = 1.7
+scale_curve = SubResource( 19 )
+color = Color( 2.5, 0, 0, 1 )
+color_ramp = SubResource( 17 )
+
+[node name="FlameThrower" instance=ExtResource( 2 )]
+frames = SubResource( 14 )
+frame = 12
+playing = true
+script = ExtResource( 3 )
+
+[node name="Fire" parent="." index="0"]
+position = Vector2( 30, -1 )
+
+[node name="Sound" parent="." index="1"]
+stream = null
+
+[node name="Cooldown" parent="." index="2"]
+wait_time = 0.05
+
+[node name="RayCast2D" parent="." index="5"]
+position = Vector2( 30, -1 )
+
+[node name="Particles" parent="." index="6"]
+position = Vector2( 30, -1 )
+amount = 22
+lifetime = 1.7
+local_coords = false
+process_material = SubResource( 15 )
+script = ExtResource( 4 )
+
+[connection signal="animation_finished" from="." to="." method="_on_FlameThrower_animation_finished"]
