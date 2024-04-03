@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/gun_out_of_ammo.mp3-757975c558f48f3441f959d31408d3bb.mp3str"
+
+[deps]
+
+source_file="res://Assets/SoundEffects/gun_out_of_ammo.mp3"
+dest_files=[ "res://.import/gun_out_of_ammo.mp3-757975c558f48f3441f959d31408d3bb.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
